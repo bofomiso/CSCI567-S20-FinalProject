@@ -1,3 +1,6 @@
+import 'package:dogapp/screens/log.dart';
+import 'package:dogapp/screens/park.dart';
+import 'package:dogapp/screens/profile.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -5,33 +8,73 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Dog App'),
+        title: Text('Home'),
         centerTitle: true,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            Container(
+            height: 130.0,
+              child: UserAccountsDrawerHeader(
+                accountName: Text('User'),
+                accountEmail: Text('User@mai.com'),
+              ),
+            ),
+            Card(
+              child:ListTile(
+                title: Text('Home'),
+                leading: Icon(Icons.home),
+                onTap: () {
+                  Navigator.push(context, new MaterialPageRoute(
+                    builder: (BuildContext context) => new Home())
+                  );
+                },
+              ),
+            ),
+            Card(
+              child:ListTile(
+                title: Text('Profile'),
+                leading: Icon(Icons.person),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(context, new MaterialPageRoute(
+                    builder: (BuildContext context) => new Profile())
+                  );
+                }
+              ),
+            ),
+            Card(
+              child:ListTile(
+                title: Text('Find Parks'),
+                leading: Icon(Icons.map),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(context, new MaterialPageRoute(
+                    builder: (BuildContext context) => new Park())
+                  );
+                }
+              ),
+            ),
+            Card(
+              child:ListTile(
+                title: Text('Logs'),
+                leading: Icon(Icons.library_books),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(context, new MaterialPageRoute(
+                    builder: (BuildContext context) => new Logs())
+                  );
+                }
+              ),
+            ),
+          ],
+        ),
       ),
       body: Center(
         child: Image.asset('assets/dog.png'),
-      ),
-      bottomNavigationBar:ButtonBar(
-          alignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            FloatingActionButton(
-              child: Text('Play'),
-              onPressed: null,
-            ),
-            FloatingActionButton(
-              child: Text('Profile'),
-              onPressed: null,
-            ),
-            FloatingActionButton(
-              child: Text('Log'),
-              onPressed: null
-            ),
-            FloatingActionButton(
-              child: Text('Park'),
-              onPressed:null
-            ),  
-          ],
-        ), 
+      ), 
     );
   }
 }
