@@ -1,10 +1,20 @@
+import 'package:dogapp/models/user.dart';
 import 'package:dogapp/screens/home/home.dart';
+import 'package:dogapp/screens/register/authenticate.dart';
+import 'package:dogapp/screens/register/login.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class Direction extends StatelessWidget {
+class direction extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //screen that is going to direct the user if they are logged in or not
-    return Home();
+
+    final user = Provider.of<User>(context);
+    if(user == null){
+      return Authenticate();
+    }else{
+      return Home();
+    }
+
   }
 }

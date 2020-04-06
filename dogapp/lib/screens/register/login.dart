@@ -1,24 +1,25 @@
 import 'package:dogapp/services/auth.dart';
-import 'package:dogapp/shared/constants.dart';
 import 'package:dogapp/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:dogapp/shared/constants.dart';
 
 
-class Register extends StatefulWidget {
+class SignIn extends StatefulWidget {
 
   final Function toggleView;
-  Register({this.toggleView});
+  SignIn({this.toggleView});
 
   @override
-  _RegisterState createState() => _RegisterState();
+  _SignInState createState() => _SignInState();
 }
 
-class _RegisterState extends State<Register> {
+class _SignInState extends State<SignIn> {
+
 
   final AuthServices _auth  = AuthServices();
   final _formKey = GlobalKey<FormState>();
-  bool loading = false;
+  bool  loading = false;
+
   // text field state
   String email = "";
   String password = "";
@@ -26,18 +27,18 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
-    return loading ? Loading() : Scaffold(
+    return loading ? Loading(): Scaffold(
       backgroundColor: Colors.grey,
       appBar: AppBar(
         backgroundColor: Colors.blueGrey,
         elevation: 0.0,
-        title: Text("Sign up to DogWalker"),
+        title: Text("Sign in to DogWalker"),
         actions: <Widget>[
           FlatButton.icon(onPressed: (){
             widget.toggleView();
           },
               icon: Icon(Icons.person),
-              label: Text("Sign in"))
+              label: Text("Register"))
         ],
       ),
       body: Container(
@@ -61,7 +62,7 @@ class _RegisterState extends State<Register> {
               SizedBox(height: 20.0),
               TextFormField(
                 decoration: textInputDecoration.copyWith(
-                  hintText: 'Password',
+                  hintText: 'Password'
                 ),
                 validator: (val) => val.length < 6 ? 'Password must be six or more characters long' : null,
                 obscureText: true,
@@ -73,20 +74,20 @@ class _RegisterState extends State<Register> {
               ),
               SizedBox(height: 20.0,),
               RaisedButton(
-                color: Colors.blueAccent,
+                color: Colors.blue,
                 child: Text(
-                  "Register",
+                  "Sign in",
                   style: TextStyle(color: Colors.white70),
                 ),
                 onPressed: () async{
                   if(_formKey.currentState.validate()){
-                    setState(() {
-                      loading = true;
-                    });
-                    dynamic result = await _auth.registerWithEmailAndPassword(email,password);
+                      setState(() {
+                        loading = true;
+                      });
+                      dynamic result = await _auth.signnWithEmailAndPassword(email, password);
                     if(result == null ){
                       setState(() {
-                        error = 'Please supply a valid email';
+                        error = 'Could not sign in with information';
                         loading = false;
                       });
                     }
