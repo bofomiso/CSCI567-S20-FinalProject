@@ -63,8 +63,8 @@ class Home extends StatelessWidget {
                 leading: Icon(Icons.map),
                 onTap: () {
                   Navigator.of(context).pop();
-                  Navigator.push(context, new MaterialPageRoute(
-                    builder: (BuildContext context) => new Park())
+                  Navigator.push(context,  MaterialPageRoute(
+                    builder: (BuildContext context) =>  MapSample())
                   );
                 }
               ),
