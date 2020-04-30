@@ -1,5 +1,6 @@
 import 'package:dogapp/screens/log.dart';
 import 'package:dogapp/screens/park.dart';
+import 'package:dogapp/screens/play.dart';
 import 'package:dogapp/screens/profile.dart';
 import 'package:dogapp/services/auth.dart';
 import 'package:flutter/material.dart';
@@ -65,6 +66,18 @@ class Home extends StatelessWidget {
                   Navigator.of(context).pop();
                   Navigator.push(context,  MaterialPageRoute(
                     builder: (BuildContext context) =>  MapSample())
+                  );
+                }
+              ),
+            ),
+            Card(
+              child:ListTile(
+                title: Text('Play'),
+                leading: Icon(Icons.mood),
+                onTap: () {
+                  Navigator.of(context).pop();
+                  Navigator.push(context,  new MaterialPageRoute(
+                    builder: (BuildContext context) =>  new Plays())
                   );
                 }
               ),
