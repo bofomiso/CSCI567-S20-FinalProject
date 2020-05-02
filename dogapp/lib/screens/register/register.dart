@@ -2,7 +2,6 @@ import 'package:dogapp/services/auth.dart';
 import 'package:dogapp/shared/constants.dart';
 import 'package:dogapp/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 
 class Register extends StatefulWidget {

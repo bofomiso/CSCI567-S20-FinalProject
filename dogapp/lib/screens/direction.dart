@@ -1,7 +1,6 @@
 import 'package:dogapp/models/user.dart';
 import 'package:dogapp/screens/home/home.dart';
 import 'package:dogapp/screens/register/authenticate.dart';
-import 'package:dogapp/screens/register/login.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
