@@ -1,5 +1,4 @@
 import 'package:dogapp/models/user.dart';
-import 'package:dogapp/services/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthServices {
@@ -8,7 +7,7 @@ class AuthServices {
   //create user obj based on firebase user
 
   User _userFromFirebaseUser(FirebaseUser user) {
-    return user != null ? User(uid: user.uid) : null;
+    return user != null ? User(uid: user.uid, email: user.email) : null;
   }
 
   //auth Stream change
@@ -46,8 +45,6 @@ class AuthServices {
       FirebaseUser user = result.user;
 
       //create a new document for the user with the uid
-
-      await DatabaseService(uid: user.uid).updateUserData(0, '');
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());

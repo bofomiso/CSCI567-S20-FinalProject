@@ -3,12 +3,20 @@ import 'package:dogapp/screens/park.dart';
 import 'package:dogapp/screens/play.dart';
 import 'package:dogapp/screens/profile.dart';
 import 'package:dogapp/services/auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
+  final String uid;
 
+  const Home({Key key, this.uid}) : super(key: key);
+  @override
+  _HomeState createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final AuthServices _auth = AuthServices();
-
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,8 +39,8 @@ class Home extends StatelessWidget {
             Container(
             height: 130.0,
               child: UserAccountsDrawerHeader(
-                accountName: Text('User'),
-                accountEmail: Text('User@mai.com'),
+                accountName: Text(''),
+                accountEmail: Text(widget.uid, style: TextStyle(fontSize: 20),),
               ),
             ),
             Card(
@@ -51,10 +59,7 @@ class Home extends StatelessWidget {
                 title: Text('Profile'),
                 leading: Icon(Icons.person),
                 onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(context, new MaterialPageRoute(
-                    builder: (BuildContext context) => new Profile())
-                  );
+                  userIdFunction(context);
                 }
               ),
             ),
@@ -102,5 +107,15 @@ class Home extends StatelessWidget {
       ), 
     );
   }
+
+    void userIdFunction(context) async{
+
+      final FirebaseUser user = await _auth.getUser();
+      final uid = user.uid;
+        Navigator.of(context).pop();
+        Navigator.push(context, new MaterialPageRoute(
+        builder: (BuildContext context) => new Profile(uid:uid))
+        );
+    }
 }
 
