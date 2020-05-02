@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dogapp/screens/newdog.dart';
+import 'package:dogapp/shared/loading.dart';
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
@@ -29,7 +30,7 @@ class _ProfileState extends State<Profile> {
       body: StreamBuilder(                    
           stream: Firestore.instance.collection('dog').where('userId', isEqualTo: widget.uid).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (!snapshot.hasData) return const Text("Loading...");
+            if (!snapshot.hasData) return Loading();
             return ListView(
               children: snapshot.data.documents.map((document) {
                 return Card(

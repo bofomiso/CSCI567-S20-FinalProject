@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
       value: AuthServices().user,
         child: MaterialApp(
           title: "Dog App",
-          home: direction(),
+          home: Direction(),
       ),
     );
   }

@@ -12,8 +12,6 @@ class NewDog extends StatefulWidget {
 }
 
 class _NewDogState extends State<NewDog> {
-  @override
-
   final AuthServices _auth  = AuthServices();
   final db = Firestore.instance;
   final _formKey = GlobalKey<FormState>();
