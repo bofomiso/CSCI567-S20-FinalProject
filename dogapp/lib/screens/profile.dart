@@ -12,6 +12,59 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
+Card buildItem(context, DocumentSnapshot doc) {
+  return Card(
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+    color: Colors.greenAccent,
+    elevation: 10,
+    child: Padding(
+      padding: const EdgeInsets.all(9.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            doc.data['name'],
+            style: TextStyle(fontSize: 28),
+          ),
+          Text(
+            'Breed: ${doc.data['breed']}',
+            style: TextStyle(fontSize: 20),
+          ),
+          Text(
+            'Size: ${doc.data['size']}',
+            style: TextStyle(fontSize: 20),
+          ),
+          Text(
+            'Age: ${doc.data['age']}',
+            style: TextStyle(fontSize: 20),
+          ),
+          SizedBox(
+            height: 12,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: <Widget>[
+              FlatButton(
+                color: Colors.blue,
+                child: Text('Edit Dog'),
+                onPressed: () => updatePage(context, doc),
+              ),
+              SizedBox(width: 8,),
+              FlatButton(
+                color: Colors.red,
+                onPressed: () => deleteDog(doc),
+                child: Text('Delete'),
+                )
+            ],
+          )
+        ],
+      ),
+    ),
+  );
+}
+
+final db = Firestore.instance;
+
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
@@ -34,28 +87,26 @@ class _ProfileState extends State<Profile> {
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) return Loading();
-            return ListView(
-              children: snapshot.data.documents.map((document) {
-                return Card(
-                  child: ListTile(
-                    title: Text(document['name']),
-                    subtitle: Text(document['breed']),
-                    trailing: Icon(Icons.more_vert),
-                    isThreeLine: true,
-                    onTap: () {
-                      Navigator.push(context,MaterialPageRoute(
-                      builder: (BuildContext context) => EditDog(uid:document.documentID, 
-                      dogAge: document['age'], 
-                      dogName: document['name'],
-                      dogSize: document['size'],
-                      dogBreed: document['breed'],)));
-                      print(document['name']);
-                    },
-                  ),
-                );
-              }).toList(),
+            return Column(
+              children: snapshot.data.documents
+                  .map((document) => buildItem(context,document))
+                  .toList(),
             );
           }),
     );
   }
 }
+
+void updatePage(context, document) {
+  Navigator.push(context,MaterialPageRoute(
+                      builder: (BuildContext context) => EditDog(uid:document.documentID,
+                      dogAge: document['age'],
+                      dogName: document['name'],
+                      dogSize: document['size'],
+                      dogBreed: document['breed'],)));
+                      print(document['name']);
+}
+
+  void deleteDog(DocumentSnapshot doc) async{
+    await db.collection('dog').document(doc.documentID).delete();
+  }

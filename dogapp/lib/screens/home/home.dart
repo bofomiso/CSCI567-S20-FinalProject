@@ -49,7 +49,7 @@ class _HomeState extends State<Home> {
                 leading: Icon(Icons.home),
                 onTap: () {
                   Navigator.push(context, new MaterialPageRoute(
-                    builder: (BuildContext context) => new Home())
+                    builder: (BuildContext context) => new Home(uid: widget.uid,))
                   );
                 },
               ),
