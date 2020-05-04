@@ -186,8 +186,34 @@ class _PlaysState extends State<Plays> {
       timeStopped = displayTime;
       DocumentReference ref = await db.collection('log').add({'name':'$dogName', 'dogId':widget.uid, 'date':'$curDate', 'time':'$timeStopped'});
       print(ref.documentID);
-      // AlertDialog(title: Text('Summary'),
-      // content: SingleChildScrollView(
+      showDialog(
+        context: context,
+        builder:(BuildContext context) {
+          return AlertDialog(
+            title: Text('Summary:'),
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: <Widget>[
+                  Text(widget.dogName),
+                  Text('Time:$timeStopped'),
+                  Text('Date:$curDate'),
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              FlatButton(
+                child: Text('Okay'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        }
+        );
+      // showDialog(
+      //   title: Text('Summary'),
+      //   content: SingleChildScrollView(
       //   child: ListBody(children: <Widget>[
       //     Text(widget.dogName),
       //     Text('Time:{$timeStopped}'),
@@ -196,9 +222,14 @@ class _PlaysState extends State<Plays> {
       //   ) ,
       //   ),
       //   actions: <Widget>[
-          
+      //     FlatButton(
+      //       child: Text('ok'),
+      //       onPressed: (){
+      //         Navigator.of(context).pop();
+      //       },
+      //     ),
       //  ],
       // );
-      Navigator.pop(context);
+      //Navigator.pop(context);
   }
 }
