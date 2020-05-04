@@ -1,6 +1,8 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:dogapp/screens/choosedog.dart';
+
 
 class Plays extends StatefulWidget {
   final String uid;
@@ -13,7 +15,7 @@ class Plays extends StatefulWidget {
 }
 
 class _PlaysState extends State<Plays> {
-  String dogName = "";
+  var curDate = DateTime.now();
   String displayTime = "00:00:00";
   String timeStopped = "00:00:00";
   var stopW = Stopwatch();
@@ -46,6 +48,9 @@ class _PlaysState extends State<Plays> {
     stopW.start();
     timer();
   }
+
+
+
   //stopping the stopwatch
   void stopSW(){
     setState(() {
@@ -156,7 +161,7 @@ class _PlaysState extends State<Plays> {
                               height: 80.0,
                               child:FloatingActionButton(
                                 heroTag: "button4",
-                                onPressed: null,
+                                onPressed:() => finishSW(curDate, widget.uid, timeStopped, widget.dogName),
                                 backgroundColor: Colors.pink,
                                 child: Text(
                                   "Finish"
@@ -174,5 +179,26 @@ class _PlaysState extends State<Plays> {
         ),
       ),
     );
+  }
+    void finishSW(var date, String dogid, String finishTime, String dogName) async{
+    final db = Firestore.instance;
+      stopW.stop();
+      timeStopped = displayTime;
+      DocumentReference ref = await db.collection('log').add({'name':'$dogName', 'dogId':widget.uid, 'date':'$curDate', 'time':'$timeStopped'});
+      print(ref.documentID);
+      // AlertDialog(title: Text('Summary'),
+      // content: SingleChildScrollView(
+      //   child: ListBody(children: <Widget>[
+      //     Text(widget.dogName),
+      //     Text('Time:{$timeStopped}'),
+      //     Text('Date:{$curDate}')
+      //   ],
+      //   ) ,
+      //   ),
+      //   actions: <Widget>[
+          
+      //  ],
+      // );
+      Navigator.pop(context);
   }
 }
