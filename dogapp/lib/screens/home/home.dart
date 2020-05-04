@@ -1,6 +1,5 @@
 import 'package:dogapp/screens/log.dart';
 import 'package:dogapp/screens/park.dart';
-import 'package:dogapp/screens/play.dart';
 import 'package:dogapp/screens/profile.dart';
 import 'package:dogapp/screens/choosedog.dart';
 import 'package:dogapp/services/auth.dart';

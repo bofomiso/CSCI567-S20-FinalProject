@@ -101,13 +101,24 @@ class _EditDogState extends State<EditDog> {
                   alignment: MainAxisAlignment.spaceAround,
                   children: <Widget>[                    
                     RaisedButton(
-                    color: Colors.red,
+                    color: Colors.blue,
                     child: Text(
                       "Cancel",
                       style: TextStyle(color: Colors.white70),
                       ),
                       onPressed: () async{
                         Navigator.pop(context);
+                      },
+                    ),
+                    RaisedButton(                    
+                    color: Colors.red,
+                    child: Text(
+                      "Delete",
+                      style: TextStyle(color: Colors.white70),
+                      ),
+                      onPressed: () async{                        
+                          deleteDog();
+                          Navigator.pop(context);                      
                       },
                     ),
                     RaisedButton(
@@ -155,4 +166,9 @@ class _EditDogState extends State<EditDog> {
     await db.collection('dog').document(widget.uid).updateData({'name':'$dogName', 
     'breed':'$dogBreed', 'age':'$dogAge', 'size':'$dogSize',});
   }
+
+  void deleteDog() async{
+    await db.collection('dog').document(widget.uid).delete();
+  }
+
 }

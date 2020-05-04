@@ -12,52 +12,45 @@ class Profile extends StatefulWidget {
   _ProfileState createState() => _ProfileState();
 }
 
-Card buildItem(context, DocumentSnapshot doc) {
-  return Card(
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-    color: Colors.greenAccent,
-    elevation: 10,
-    child: Padding(
-      padding: const EdgeInsets.all(9.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            doc.data['name'],
-            style: TextStyle(fontSize: 28),
-          ),
-          Text(
-            'Breed: ${doc.data['breed']}',
-            style: TextStyle(fontSize: 20),
-          ),
-          Text(
-            'Size: ${doc.data['size']}',
-            style: TextStyle(fontSize: 20),
-          ),
-          Text(
-            'Age: ${doc.data['age']}',
-            style: TextStyle(fontSize: 20),
-          ),
-          SizedBox(
-            height: 12,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
+InkWell buildItem(context, DocumentSnapshot doc) {
+  return InkWell(
+      onTap: () => updatePage(context, doc),
+      splashColor: Colors.pink,
+      child: 
+      Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+      color: Colors.greenAccent,
+      elevation: 10,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: 
+        Container(
+          width: double.infinity,
+                  child: Column(          
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              FlatButton(
-                color: Colors.blue,
-                child: Text('Edit Dog'),
-                onPressed: () => updatePage(context, doc),
+              Text(
+                doc.data['name'],
+                style: TextStyle(fontSize: 28),
               ),
-              SizedBox(width: 8,),
-              FlatButton(
-                color: Colors.red,
-                onPressed: () => deleteDog(doc),
-                child: Text('Delete'),
-                )
+              Text(
+                'Breed: ${doc.data['breed']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                'Size: ${doc.data['size']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                'Age: ${doc.data['age']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(
+                height: 12,
+              ),
             ],
-          )
-        ],
+          ),
+        ),
       ),
     ),
   );

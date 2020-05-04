@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dogapp/screens/play.dart';
 import 'package:dogapp/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'package:dogapp/screens/play.dart';
 
 class Choose extends StatefulWidget {
   final String uid;
@@ -12,6 +11,50 @@ class Choose extends StatefulWidget {
 
   @override
   _ChooseState createState() => _ChooseState();
+}
+
+InkWell buildItem(context, DocumentSnapshot doc) {
+  return InkWell(
+      onTap: () => updatePage(context, doc),
+      splashColor: Colors.pink,
+      child: 
+      Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+      color: Colors.greenAccent,
+      elevation: 10,
+      child: Padding(
+        padding: const EdgeInsets.all(20.0),
+        child: 
+        Container(
+          width: double.infinity,
+                  child: Column(          
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                doc.data['name'],
+                style: TextStyle(fontSize: 28),
+              ),
+              Text(
+                'Breed: ${doc.data['breed']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                'Size: ${doc.data['size']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              Text(
+                'Age: ${doc.data['age']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              SizedBox(
+                height: 12,
+              ),
+            ],
+          ),
+        ),
+      ),
+    ),
+  );
 }
 
 class _ChooseState extends State<Choose> {
@@ -29,24 +72,18 @@ class _ChooseState extends State<Choose> {
             if (!snapshot.hasData) return Loading();
             return ListView(
               children: snapshot.data.documents.map((document) {
-                return Card(
-                  child: ListTile(
-                    title: Text(document['name']),
-                    subtitle: Text(document['breed']),
-                    trailing: Icon(Icons.more_vert),
-                    isThreeLine: true,
-                    onTap: (){
-                      print(document['name']);
-                      Navigator.of(context).pop();
-                      Navigator.push(context, new MaterialPageRoute(
-                      builder: (BuildContext context) => new Plays(uid:document.documentID, dogName: document['name'],))
-                      );
-                    },
-                  ),
-                );
+                return buildItem(context, document);
               }).toList(),
             );
           }),
     );
   }
 }
+
+  void updatePage(context, document) {
+  Navigator.push(context,MaterialPageRoute(
+                      builder: (BuildContext context) => Plays(uid:document.documentID,                      
+                      dogName: document['name'],
+                      )));
+                      print(document['name']);
+  }
