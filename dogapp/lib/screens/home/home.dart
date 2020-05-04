@@ -2,6 +2,7 @@ import 'package:dogapp/screens/log.dart';
 import 'package:dogapp/screens/park.dart';
 import 'package:dogapp/screens/play.dart';
 import 'package:dogapp/screens/profile.dart';
+import 'package:dogapp/screens/choosedog.dart';
 import 'package:dogapp/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -80,10 +81,7 @@ class _HomeState extends State<Home> {
                 title: Text('Play'),
                 leading: Icon(Icons.mood),
                 onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(context,  new MaterialPageRoute(
-                    builder: (BuildContext context) =>  new Plays())
-                  );
+                  chooseId(context);
                 }
               ),
             ),
@@ -117,5 +115,17 @@ class _HomeState extends State<Home> {
         builder: (BuildContext context) => new Profile(uid:uid))
         );
     }
+
+    void chooseId(context) async{
+
+      final FirebaseUser user = await _auth.getUser();
+      final uid = user.uid;
+        Navigator.of(context).pop();
+        Navigator.push(context, new MaterialPageRoute(
+        builder: (BuildContext context) => new Choose(uid:uid))
+        );
+    }
+
+
 }
 

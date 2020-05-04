@@ -1,13 +1,19 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:dogapp/screens/choosedog.dart';
 
 class Plays extends StatefulWidget {
+  final String uid;
+  final String dogName;
+
+  const Plays({Key key, this.uid, this.dogName}) : super(key: key);
+  
   @override
   State<Plays> createState() => _PlaysState();
 }
 
 class _PlaysState extends State<Plays> {
+  String dogName = "";
   String displayTime = "00:00:00";
   String timeStopped = "00:00:00";
   var stopW = Stopwatch();
@@ -45,6 +51,7 @@ class _PlaysState extends State<Plays> {
     setState(() {
       stop = true;
       reset = false;
+      start = true;
     });
     stopW.stop();
     timeStopped = displayTime;
@@ -70,7 +77,7 @@ class _PlaysState extends State<Plays> {
           child: Column(
             children: <Widget>[
               Expanded(
-                flex: 6,
+                flex: 5,
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(
@@ -82,7 +89,7 @@ class _PlaysState extends State<Plays> {
                 ),
               ),
               Text(
-                'Persons dog',
+                widget.dogName,
                 style: TextStyle(
                   fontSize: 25.0,
                 ),
@@ -126,6 +133,12 @@ class _PlaysState extends State<Plays> {
                                 ),
                               ),
                             ),
+
+                          ],
+                      ),
+                      Row(
+                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: <Widget>[
                             Container(
                               width: 80.0,
                               height: 80.0,
@@ -135,6 +148,18 @@ class _PlaysState extends State<Plays> {
                                 backgroundColor: Colors.cyan,
                                 child: Text(
                                   "reset"
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: 80.0,
+                              height: 80.0,
+                              child:FloatingActionButton(
+                                heroTag: "button4",
+                                onPressed: null,
+                                backgroundColor: Colors.pink,
+                                child: Text(
+                                  "Finish"
                                 ),
                               ),
                             ),
