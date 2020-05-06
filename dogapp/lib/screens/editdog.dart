@@ -42,7 +42,8 @@ class _EditDogState extends State<EditDog> {
           padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 50.0),
           child: Form(
             key: _formKey,
-            child: Column(
+            child: 
+              Column(
               children: <Widget>[
                   SizedBox(height: 20.0),
                 TextFormField(

@@ -1,20 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dogapp/screens/newdog.dart';
+import 'package:dogapp/screens/log.dart';
+import 'package:dogapp/screens/play.dart';
 import 'package:dogapp/shared/loading.dart';
 import 'package:flutter/material.dart';
-import 'editdog.dart';
 
-class Profile extends StatefulWidget {
+class ChooseLog extends StatefulWidget {
   final String uid;
+  final String dogName;
 
-  const Profile({Key key, this.uid}) : super(key: key);
+  const ChooseLog({Key key, this.uid, this.dogName}) : super(key: key); 
+
   @override
-  _ProfileState createState() => _ProfileState();
+  _ChooseLogState createState() => _ChooseLogState();
 }
 
 InkWell buildItem(context, DocumentSnapshot doc) {
   return InkWell(
-      onTap: () => updatePage(context, doc),
+      onTap: () => goLog(context,doc),
       splashColor: Colors.pink,
       child: 
       Card(
@@ -56,52 +58,33 @@ InkWell buildItem(context, DocumentSnapshot doc) {
   );
 }
 
-final db = Firestore.instance;
+class _ChooseLogState extends State<ChooseLog> {
+  //final AuthServices _auth = AuthServices();
 
-class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Your Dogs'), actions: <Widget>[
-        FlatButton.icon(
-            onPressed: () async {
-              await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (BuildContext context) => NewDog()));
-            },
-            icon: Icon(Icons.person),
-            label: Text("Add Dog"))
-      ]),
-      body: StreamBuilder(
-          stream: Firestore.instance
-              .collection('dog')
-              .where('userId', isEqualTo: widget.uid)
-              .snapshots(),
+      appBar: AppBar(
+        title: Text('Choose your Dog'),
+      ),
+      body: StreamBuilder(                    
+          stream: Firestore.instance.collection('dog').where('userId', isEqualTo: widget.uid).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) return Loading();
-            return Column(
-              children: snapshot.data.documents
-                  .map((document) => 
-                  SingleChildScrollView(child: 
-                  buildItem(context,document)))
-                  .toList(),
+            return ListView(
+              children: snapshot.data.documents.map((document) {
+                return buildItem(context, document);
+              }).toList(),
             );
           }),
     );
   }
 }
 
-void updatePage(context, document) {
+  void goLog(context, document) {
   Navigator.push(context,MaterialPageRoute(
-                      builder: (BuildContext context) => EditDog(uid:document.documentID,
-                      dogAge: document['age'],
+                      builder: (BuildContext context) => Logs(dogId:document.documentID,                      
                       dogName: document['name'],
-                      dogSize: document['size'],
-                      dogBreed: document['breed'],)));
+                      )));
                       print(document['name']);
-}
-
-  void deleteDog(DocumentSnapshot doc) async{
-    await db.collection('dog').document(doc.documentID).delete();
   }

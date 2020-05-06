@@ -6,6 +6,8 @@ import 'package:dogapp/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../../chooselog.dart';
+
 class Home extends StatefulWidget {
   final String uid;
 
@@ -89,10 +91,7 @@ class _HomeState extends State<Home> {
                 title: Text('Logs'),
                 leading: Icon(Icons.library_books),
                 onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(context, new MaterialPageRoute(
-                    builder: (BuildContext context) => new Logs())
-                  );
+                  chooseLogId(context);
                 }
               ),
             ),
@@ -122,6 +121,16 @@ class _HomeState extends State<Home> {
         Navigator.of(context).pop();
         Navigator.push(context, new MaterialPageRoute(
         builder: (BuildContext context) => new Choose(uid:uid))
+        );
+    }
+
+      void chooseLogId(context) async{
+
+        final FirebaseUser user = await _auth.getUser();
+        final uid = user.uid;
+          Navigator.of(context).pop();
+          Navigator.push(context, new MaterialPageRoute(
+          builder: (BuildContext context) => new ChooseLog(uid:uid))
         );
     }
 
