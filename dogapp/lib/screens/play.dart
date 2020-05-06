@@ -87,8 +87,18 @@ class _PlaysState extends State<Plays> {
         child: Container(
           child: Column(
             children: <Widget>[
+            
+              Container(
+              padding: EdgeInsets.all(50.0),
+                child: Text(
+                  widget.dogName ,
+                  style: TextStyle(
+                    fontSize: 50.0,
+                  ),
+                ),
+              ),
               Expanded(
-                flex: 5,
+                flex: 2,
                 child: Container(
                   alignment: Alignment.center,
                   child: Text(
@@ -97,18 +107,7 @@ class _PlaysState extends State<Plays> {
                   ),
                 ),
               ),
-              Text(
-                widget.dogName,
-                style: TextStyle(
-                  fontSize: 25.0,
-                ),
-              ),
-              Text(
-                'Most recent play: $timeStopped',
-                style: TextStyle(
-                  fontSize: 25.0,
-                ),
-              ),
+
               Expanded(
                 flex: 4,
                 child: Container(
@@ -124,7 +123,7 @@ class _PlaysState extends State<Plays> {
                             child: FloatingActionButton(
                               heroTag: "button1",
                               onPressed: start ? startSW : null,
-                              backgroundColor: Colors.green,
+                              backgroundColor: start ? Colors.green : Colors.grey,
                               child: Text("Start"),
                             ),
                           ),
@@ -134,7 +133,7 @@ class _PlaysState extends State<Plays> {
                             child: FloatingActionButton(
                               heroTag: "button2",
                               onPressed: stop ? null : stopSW,
-                              backgroundColor: Colors.red,
+                              backgroundColor: stop ? Colors.grey : Colors.red,
                               child: Text("Stop"),
                             ),
                           ),
@@ -149,7 +148,7 @@ class _PlaysState extends State<Plays> {
                             child: FloatingActionButton(
                               heroTag: "button3",
                               onPressed: reset ? null : resetSW,
-                              backgroundColor: Colors.cyan,
+                              backgroundColor: start ? Colors.cyan : Colors.grey,
                               child: Text("reset"),
                             ),
                           ),
@@ -159,7 +158,7 @@ class _PlaysState extends State<Plays> {
                             child: FloatingActionButton(
                               heroTag: "button4",
                               onPressed:finish ? () => finishSW(realDate, widget.uid, timeStopped,widget.dogName):null,                               
-                              backgroundColor: Colors.pink,
+                              backgroundColor: start ? Colors.pink : Colors.grey,
                               child: Text("Finish"),
                             ),
                           ),
