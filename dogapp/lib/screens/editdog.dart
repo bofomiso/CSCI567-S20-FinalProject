@@ -85,6 +85,7 @@ class _EditDogState extends State<EditDog> {
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
+                  keyboardType: TextInputType.phone,
                   initialValue: widget.dogAge,
                   decoration: textInputDecoration.copyWith(
                     hintText: 'Age'
