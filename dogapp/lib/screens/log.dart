@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dogapp/screens/play.dart';
 import 'package:dogapp/shared/loading.dart';
 
 

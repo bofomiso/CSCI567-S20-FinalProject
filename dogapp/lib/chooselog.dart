@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dogapp/screens/log.dart';
-import 'package:dogapp/screens/play.dart';
 import 'package:dogapp/shared/loading.dart';
 import 'package:flutter/material.dart';
 
@@ -71,10 +70,11 @@ class _ChooseLogState extends State<ChooseLog> {
           stream: Firestore.instance.collection('dog').where('userId', isEqualTo: widget.uid).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) return Loading();
-            return ListView(
-              children: snapshot.data.documents.map((document) {
-                return buildItem(context, document);
-              }).toList(),
+            return ListView.builder(
+              itemCount: snapshot.data.documents.length ,
+              itemBuilder: (context, index){
+                return buildItem(context, snapshot.data.documents[index]);
+              },
             );
           }),
     );

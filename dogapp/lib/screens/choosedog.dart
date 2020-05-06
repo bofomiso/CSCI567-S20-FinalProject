@@ -70,10 +70,11 @@ class _ChooseState extends State<Choose> {
           stream: Firestore.instance.collection('dog').where('userId', isEqualTo: widget.uid).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) return Loading();
-            return ListView(
-              children: snapshot.data.documents.map((document) {
-                return buildItem(context, document);
-              }).toList(),
+            return ListView.builder(
+              itemCount: snapshot.data.documents.length ,
+              itemBuilder: (context, index){
+                return buildItem(context, snapshot.data.documents[index]);
+              },
             );
           }),
     );
