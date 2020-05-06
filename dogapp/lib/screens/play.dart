@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class Plays extends StatefulWidget {
   final String uid;
@@ -14,7 +15,7 @@ class Plays extends StatefulWidget {
 }
 
 class _PlaysState extends State<Plays> {
-  var curDate = DateTime.now();
+  DateTime curDate = DateTime.now();
   String displayTime = "00:00:00";
   String timeStopped = "00:00:00";
   var stopW = Stopwatch();
@@ -77,6 +78,7 @@ class _PlaysState extends State<Plays> {
 
   @override
   Widget build(BuildContext context) {
+    String realDate = DateFormat.yMMMd().format(curDate);
     return Scaffold(
       appBar: AppBar(
         title: Text('Play'),
@@ -156,7 +158,7 @@ class _PlaysState extends State<Plays> {
                             height: 80.0,
                             child: FloatingActionButton(
                               heroTag: "button4",
-                              onPressed:finish ? () => finishSW(curDate, widget.uid, timeStopped,widget.dogName):null,                               
+                              onPressed:finish ? () => finishSW(realDate, widget.uid, timeStopped,widget.dogName):null,                               
                               backgroundColor: Colors.pink,
                               child: Text("Finish"),
                             ),
@@ -174,14 +176,14 @@ class _PlaysState extends State<Plays> {
     );
   }
 
-  void finishSW(var date, String dogid, String finishTime, String dogName) async {
+  void finishSW(String date, String dogid, String finishTime, String dogName) async {
     final db = Firestore.instance;
     stopW.stop();
     timeStopped = displayTime;
     DocumentReference ref = await db.collection('log').add({
       'name': '$dogName',
       'dogId': widget.uid,
-      'date': '$curDate',
+      'date': '$date',
       'time': '$timeStopped'
     });
     print(ref.documentID);
@@ -195,7 +197,7 @@ class _PlaysState extends State<Plays> {
                 children: <Widget>[
                   Text(widget.dogName),
                   Text('Time:$timeStopped'),
-                  Text('Date:$curDate'),
+                  Text('Date:$date'),
                 ],
               ),
             ),
