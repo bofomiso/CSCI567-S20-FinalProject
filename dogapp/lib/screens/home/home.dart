@@ -1,4 +1,3 @@
-import 'package:dogapp/screens/log.dart';
 import 'package:dogapp/screens/park.dart';
 import 'package:dogapp/screens/profile.dart';
 import 'package:dogapp/screens/choosedog.dart';

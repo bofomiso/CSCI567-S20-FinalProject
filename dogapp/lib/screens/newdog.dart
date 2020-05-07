@@ -77,6 +77,7 @@ class _NewDogState extends State<NewDog> {
                 ),
                 SizedBox(height: 20.0),
                 TextFormField(
+                  keyboardType: TextInputType.phone,
                   decoration: textInputDecoration.copyWith(
                     hintText: 'Age'
                   ),

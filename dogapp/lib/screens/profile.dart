@@ -26,7 +26,7 @@ InkWell buildItem(context, DocumentSnapshot doc) {
         child: 
         Container(
           width: double.infinity,
-                  child: Column(          
+            child: Column(          
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               Text(
@@ -80,12 +80,12 @@ class _ProfileState extends State<Profile> {
               .snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) return Loading();
-            return Column(
-              children: snapshot.data.documents
-                  .map((document) => 
-                  SingleChildScrollView(child: 
-                  buildItem(context,document)))
-                  .toList(),
+            return 
+            ListView.builder(
+              itemCount: snapshot.data.documents.length ,
+              itemBuilder: (context, index){
+                return buildItem(context, snapshot.data.documents[index]);
+              },
             );
           }),
     );
