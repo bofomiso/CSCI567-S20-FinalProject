@@ -4,6 +4,7 @@ import 'package:dogapp/shared/constants.dart';
 import 'package:dogapp/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class NewDog extends StatefulWidget {
 
