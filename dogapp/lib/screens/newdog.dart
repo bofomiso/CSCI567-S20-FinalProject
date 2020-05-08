@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dogapp/services/auth.dart';
 import 'package:dogapp/shared/constants.dart';
@@ -7,6 +6,8 @@ import 'package:dogapp/shared/loading.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 class NewDog extends StatefulWidget {
   @override
@@ -14,7 +15,7 @@ class NewDog extends StatefulWidget {
 }
 
 class _NewDogState extends State<NewDog> {
-  String _path = null;
+  File _path = null;
   final AuthServices _auth  = AuthServices();
   final db = Firestore.instance;
   final _formKey = GlobalKey<FormState>();
@@ -27,6 +28,8 @@ class _NewDogState extends State<NewDog> {
   String dogSize = "";
   String dogAge = "";
   String error = "";
+  String url = "";
+  String picUrl = "";
   
 
   Widget build(BuildContext context) {
@@ -63,7 +66,7 @@ class _NewDogState extends State<NewDog> {
                   validator: (val) => val.isEmpty ? 'Enter a Breed' : null,
                   onChanged: (val){
                     setState(() {
-                      dogBreed = val;
+                    dogBreed = val;
                     });
                   },
                 ),
@@ -95,7 +98,7 @@ class _NewDogState extends State<NewDog> {
                 SafeArea(
                   child:  Column(
                     children: <Widget>[
-                      _path == null ? Image.asset('assets/dog.png', width: 200, height: 200,) : Image.file(File(_path), width: 200, height: 200,)
+                      _path == null ? Image.asset('assets/dog.png', width: 200, height: 200,) : Image.file(_path, width: 200, height: 200,)
                     ],
                   ),
                 ),
@@ -133,6 +136,7 @@ class _NewDogState extends State<NewDog> {
                       ),
                       onPressed: () async{
                         if(_formKey.currentState.validate()){
+                          upload(context);
                           createDog();
                         }
                       },
@@ -159,7 +163,7 @@ class _NewDogState extends State<NewDog> {
       final FirebaseUser user = await _auth.getUser();
       final uid = user.uid;
       _formKey.currentState.save();
-      DocumentReference ref = await db.collection('dog').add({'name':'$dogName', 'breed':'$dogBreed', 'age':'$dogAge', 'size':'$dogSize', 'userId':'$uid'});
+      DocumentReference ref = await db.collection('dog').add({'name':'$dogName', 'breed':'$dogBreed', 'age':'$dogAge', 'size':'$dogSize', 'userId':'$uid', 'pictureURL': '$picUrl'});
       print(ref.documentID);
       Navigator.pop(context);
     }
@@ -201,7 +205,7 @@ class _NewDogState extends State<NewDog> {
     print(file.path);
 
     setState(() {
-      _path = file.path;
+      _path = file;
     });
     
   }
@@ -211,8 +215,20 @@ class _NewDogState extends State<NewDog> {
     print(file.path);
 
     setState(() {
-      _path = file.path;
+      _path = file;
     });
   }
+
+  Future upload(BuildContext context) async {
+    String filename = _path.path;
+    StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(filename);
+    StorageUploadTask uploadTask = firebaseStorageRef.putFile(_path);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+
+    url = await(await uploadTask.onComplete).ref.getDownloadURL();
+    picUrl = url.toString();
+    print(picUrl);
+  }
+  
 
 }
