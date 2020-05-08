@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dogapp/services/auth.dart';
 import 'package:dogapp/shared/constants.dart';
@@ -7,16 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class NewDog extends StatefulWidget {
-
   @override
   _NewDogState createState() => _NewDogState();
 }
 
 class _NewDogState extends State<NewDog> {
+  String _path = null;
   final AuthServices _auth  = AuthServices();
   final db = Firestore.instance;
   final _formKey = GlobalKey<FormState>();
   bool  loading = false;
+
+ 
 
   String dogName = "";
   String dogBreed = "";
@@ -88,6 +92,25 @@ class _NewDogState extends State<NewDog> {
                     });
                   },
                 ),
+                SafeArea(
+                  child:  Column(
+                    children: <Widget>[
+                      _path == null ? Image.asset('assets/dog.png', width: 200, height: 200,) : Image.file(File(_path), width: 200, height: 200,)
+                    ],
+                  ),
+                ),
+                FlatButton(
+                  onPressed: (){
+                    typeOfPic(context);
+                  }, 
+                  child: Text('profile'),
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  disabledColor: Colors.grey,
+                  disabledTextColor: Colors.black,
+                  padding: EdgeInsets.all(8.0),
+                  splashColor: Colors.blueAccent,
+                ),
                 SizedBox(height: 20.0,),
                 ButtonBar(
                   alignment: MainAxisAlignment.spaceAround,
@@ -130,6 +153,7 @@ class _NewDogState extends State<NewDog> {
       ),
     );
   }
+
   void createDog() async{
     if(_formKey.currentState.validate()){
       final FirebaseUser user = await _auth.getUser();
@@ -139,6 +163,56 @@ class _NewDogState extends State<NewDog> {
       print(ref.documentID);
       Navigator.pop(context);
     }
+  }
+
+  void typeOfPic(BuildContext context){
+    showModalBottomSheet(
+      context: context, 
+      builder: (context) {
+        return Container(
+          height: 150,
+          child: Column(
+            children: <Widget>[
+              ListTile(
+                onTap: () {
+                  goToCamera();
+                  Navigator.pop(context);
+                },
+                leading: Icon(Icons.photo_camera),
+                title: Text('Take a picture'),
+              ),
+              ListTile(
+                onTap: (){
+                  goToLibrary();
+                  Navigator.pop(context);
+                },
+                leading: Icon(Icons.photo_library),
+                title: Text('Choose from library'),
+              ),
+            ],
+          ),
+        );
+      }
+    );
+  }
+
+  void goToLibrary() async {
+    final file = await ImagePicker.pickImage(source: ImageSource.gallery);
+    print(file.path);
+
+    setState(() {
+      _path = file.path;
+    });
+    
+  }
+
+  void goToCamera() async {
+    final file = await ImagePicker.pickImage(source: ImageSource.camera);
+    print(file.path);
+
+    setState(() {
+      _path = file.path;
+    });
   }
 
 }
