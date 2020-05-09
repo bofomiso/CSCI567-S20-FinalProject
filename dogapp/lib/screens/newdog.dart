@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dogapp/services/auth.dart';
 import 'package:dogapp/shared/constants.dart';
@@ -28,8 +29,8 @@ class _NewDogState extends State<NewDog> {
   String dogSize = "";
   String dogAge = "";
   String error = "";
-  String url = "";
-  String picUrl = "";
+  String url;
+  String picUrl;
   
 
   Widget build(BuildContext context) {
@@ -136,8 +137,17 @@ class _NewDogState extends State<NewDog> {
                       ),
                       onPressed: () async{
                         if(_formKey.currentState.validate()){
-                          upload(context);
-                          createDog();
+                          //toUpload(_path);
+                            int randomNum = Random().nextInt(100000);
+                            String imageLocation = 'images/images$randomNum.jpg';
+
+                            StorageReference storageRef = FirebaseStorage.instance.ref().child(imageLocation);
+                            StorageUploadTask uploadTask = storageRef.putFile(_path);
+                            StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+
+    
+                            url = await(taskSnapshot).ref.getDownloadURL();
+                            createDog();
                         }
                       },
                     ),
@@ -163,7 +173,7 @@ class _NewDogState extends State<NewDog> {
       final FirebaseUser user = await _auth.getUser();
       final uid = user.uid;
       _formKey.currentState.save();
-      DocumentReference ref = await db.collection('dog').add({'name':'$dogName', 'breed':'$dogBreed', 'age':'$dogAge', 'size':'$dogSize', 'userId':'$uid', 'pictureURL': '$picUrl'});
+      DocumentReference ref = await db.collection('dog').add({'name':'$dogName', 'breed':'$dogBreed', 'age':'$dogAge', 'size':'$dogSize', 'userId':'$uid', 'pictureURL': '$url'});
       print(ref.documentID);
       Navigator.pop(context);
     }
@@ -219,16 +229,32 @@ class _NewDogState extends State<NewDog> {
     });
   }
 
-  Future upload(BuildContext context) async {
-    String filename = _path.path;
-    StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(filename);
-    StorageUploadTask uploadTask = firebaseStorageRef.putFile(_path);
-    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+ upload(BuildContext context) async {
+    //String filename = _path.path;
+    if(_path != null){
+      StorageReference firebaseStorageRef = FirebaseStorage.instance.ref().child(_path.toString());
+      StorageUploadTask uploadTask = firebaseStorageRef.putFile(_path);
+      StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
 
-    url = await(await uploadTask.onComplete).ref.getDownloadURL();
-    picUrl = url.toString();
-    print(picUrl);
+      url = await (taskSnapshot).ref.getDownloadURL();
+    }
   }
   
+  toUpload(File imageFile) async {
+    int randomNum = Random().nextInt(100000);
+    String imageLocation = 'images/images$randomNum.jpg';
+
+    StorageReference storageRef = FirebaseStorage.instance.ref().child(imageLocation);
+    StorageUploadTask uploadTask = storageRef.putFile(imageFile);
+    StorageTaskSnapshot taskSnapshot = await uploadTask.onComplete;
+
+    
+    url = await(taskSnapshot).ref.getDownloadURL();
+    //print(url);
+    picUrl = url.toString();
+    print(picUrl);
+
+    
+  }
 
 }
