@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:geolocator/geolocator.dart';
-import 'package:search_map_place/search_map_place.dart';
+// import 'package:search_map_place/search_map_place.dart';
 
 class MapSample extends StatefulWidget {
   @override
@@ -49,23 +49,23 @@ class MapSampleState extends State<MapSample> {
                 _mapController.complete(controller);
               },
             ),
-            Positioned(
-              top:50,
-              left: MediaQuery.of(context).size.width * 0.1,
-              child: SearchMapPlaceWidget(
-                apiKey: "AIzaSyCfTC1EkyNxIsaxjJXcF9jM50ZXvi41GPE",
-                location: initialPosition,
-                radius: 10000, //in meters
-                strictBounds: true,
+            // Positioned(
+            //   top:50,
+            //   left: MediaQuery.of(context).size.width * 0.1,
+            //   child: SearchMapPlaceWidget(
+            //     apiKey: "AIzaSyCfTC1EkyNxIsaxjJXcF9jM50ZXvi41GPE",
+            //     location: initialPosition,
+            //     radius: 10000, //in meters
+            //     strictBounds: true,
                 
-                onSelected: (Place place) async {
-                  final geolocation = await place.geolocation;
-                  final GoogleMapController controller = await _mapController.future;
-                  controller.animateCamera(CameraUpdate.newLatLng(geolocation.coordinates));
-                  controller.animateCamera(CameraUpdate.newLatLngBounds(geolocation.bounds, 0));
-                },
-              ),
-            ),
+            //     onSelected: (Place place) async {
+            //       final geolocation = await place.geolocation;
+            //       final GoogleMapController controller = await _mapController.future;
+            //       controller.animateCamera(CameraUpdate.newLatLng(geolocation.coordinates));
+            //       controller.animateCamera(CameraUpdate.newLatLngBounds(geolocation.bounds, 0));
+            //     },
+            //   ),
+            // ),
           ],
         ),
       );

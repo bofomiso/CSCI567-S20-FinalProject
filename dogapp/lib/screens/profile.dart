@@ -111,7 +111,8 @@ void updatePage(context, document) {
                       dogAge: document['age'],
                       dogName: document['name'],
                       dogSize: document['size'],
-                      dogBreed: document['breed'],)));
+                      dogBreed: document['breed'],
+                      picUrl: document['pictureURL'],)));
                       print(document['name']);
 }
 

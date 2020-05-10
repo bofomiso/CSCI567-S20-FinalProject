@@ -42,6 +42,10 @@ InkWell buildItem(context, DocumentSnapshot doc) {
                 'Time: ${doc.data['time']}',
                 style: TextStyle(fontSize: 20),
               ),
+               Text(                 
+                awardPicker(doc.data['time']),
+                style: TextStyle(fontSize: 20),
+              ),
               SizedBox(
                 height: 12,
               ),
@@ -52,6 +56,20 @@ InkWell buildItem(context, DocumentSnapshot doc) {
     ),
   );
 }
+
+  String awardPicker(String time){
+    String temp = time.replaceAll(RegExp(r"[^\s\w]"),'');
+    int temp1 = int.parse(temp);
+    if(temp1>0&&temp1<1000){
+      return "Play Rating: Bronze";
+    }else if(temp1>=1000&&temp1<2000){
+      return "Play Rating: Silver";
+    }else if(temp1>=2000){
+      return "Play Rating: Gold";
+    }else{
+      return "";
+    }
+  }
 
 class _LogsState extends State<Logs> {
   @override

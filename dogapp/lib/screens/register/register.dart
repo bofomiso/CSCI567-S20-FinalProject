@@ -26,9 +26,8 @@ class _RegisterState extends State<Register> {
   @override
   Widget build(BuildContext context) {
     return loading ? Loading() : Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
         elevation: 0.0,
         title: Text("Sign up to DogWalker"),
         actions: <Widget>[

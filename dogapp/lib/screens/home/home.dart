@@ -1,3 +1,4 @@
+import 'package:dogapp/screens/newdog.dart';
 import 'package:dogapp/screens/park.dart';
 import 'package:dogapp/screens/profile.dart';
 import 'package:dogapp/screens/choosedog.dart';
@@ -17,7 +18,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final AuthServices _auth = AuthServices();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -26,7 +27,7 @@ class _HomeState extends State<Home> {
         centerTitle: true,
         actions: <Widget>[
           FlatButton.icon(
-              onPressed: () async{
+              onPressed: () async {
                 await _auth.signOut();
               },
               icon: Icon(Icons.person),
@@ -38,67 +39,70 @@ class _HomeState extends State<Home> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             Container(
-            height: 130.0,
+              height: 130.0,
               child: UserAccountsDrawerHeader(
                 accountName: Text(''),
-                accountEmail: Text(widget.uid, style: TextStyle(fontSize: 20),),
+                accountEmail: Text(
+                  widget.uid,
+                  style: TextStyle(fontSize: 20),
+                ),
               ),
             ),
             Card(
-              child:ListTile(
+              child: ListTile(
                 title: Text('Home'),
                 leading: Icon(Icons.home),
                 onTap: () {
-                  Navigator.push(context, new MaterialPageRoute(
-                    builder: (BuildContext context) => new Home(uid: widget.uid,))
-                  );
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (BuildContext context) => new Home(
+                                uid: widget.uid,
+                              )));
                 },
               ),
             ),
             Card(
-              child:ListTile(
-                title: Text('Profile'),
-                leading: Icon(Icons.person),
-                onTap: () {
-                  userIdFunction(context);
-                }
-              ),
+              child: ListTile(
+                  title: Text('Profile'),
+                  leading: Icon(Icons.person),
+                  onTap: () {
+                    userIdFunction(context);
+                  }),
             ),
             Card(
-              child:ListTile(
-                title: Text('Find Parks'),
-                leading: Icon(Icons.map),
-                onTap: () {
-                  Navigator.of(context).pop();
-                  Navigator.push(context,  MaterialPageRoute(
-                    builder: (BuildContext context) =>  MapSample())
-                  );
-                }
-              ),
+              child: ListTile(
+                  title: Text('Find Parks'),
+                  leading: Icon(Icons.map),
+                  onTap: () {
+                    Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (BuildContext context) => MapSample()));
+                  }),
             ),
             Card(
-              child:ListTile(
-                title: Text('Play'),
-                leading: Icon(Icons.mood),
-                onTap: () {
-                  chooseId(context);
-                }
-              ),
+              child: ListTile(
+                  title: Text('Play'),
+                  leading: Icon(Icons.mood),
+                  onTap: () {
+                    chooseId(context);
+                  }),
             ),
             Card(
-              child:ListTile(
-                title: Text('Logs'),
-                leading: Icon(Icons.library_books),
-                onTap: () {
-                  chooseLogId(context);
-                }
-              ),
+              child: ListTile(
+                  title: Text('Logs'),
+                  leading: Icon(Icons.library_books),
+                  onTap: () {
+                    chooseLogId(context);
+                  }),
             ),
           ],
         ),
       ),
       body: Container(
-        padding: EdgeInsets.only(top:10.0),
+        padding: EdgeInsets.only(top: 10.0),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisSize: MainAxisSize.max,
@@ -108,15 +112,10 @@ class _HomeState extends State<Home> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
-                // Text(
-                //   'Doggo',
-                //    style: TextStyle(
-                //      fontSize: 49,
-                //    ), 
-                // ),
-                Image.asset('assets/dog.png',
-                height: 150,
-                width: 150,
+                Image.asset(
+                  'assets/dog.png',
+                  height: 150,
+                  width: 150,
                 ),
                 Text('Already have a dog? Time his play session!'),
                 Text('Add your dog if you havent!'),
@@ -125,63 +124,75 @@ class _HomeState extends State<Home> {
                   children: <Widget>[
                     ButtonBar(
                       children: <Widget>[
-                       FloatingActionButton(
-                        onPressed: null,
-                        child: Text('Play'),
-                        heroTag: 'button5',
-                      ),
-                        FloatingActionButton(
-                          onPressed: null,
+                        RaisedButton(
+                          color: Colors.green,
+                          onPressed: () {
+                            newDogActionBar(context);
+                          },
                           child: Text('Add'),
-                          heroTag: 'button6',
-                          backgroundColor: Colors.green,
+                        ),
+                        RaisedButton(
+                          color: Colors.blueAccent,
+                          onPressed: () {
+                            gotoPlay(context);
+                          },
+                          child: Text('Play'),
                         ),
                       ],
                     ),
-
-
                   ],
                 )
               ],
             ),
           ],
         ),
-      ), 
+      ),
     );
   }
 
   //child: Image.asset('assets/dog.png'),
 
-    void userIdFunction(context) async{
+  void userIdFunction(context) async {
+    final FirebaseUser user = await _auth.getUser();
+    final uid = user.uid;
+    Navigator.of(context).pop();
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (BuildContext context) => new Profile(uid: uid)));
+  }
 
-      final FirebaseUser user = await _auth.getUser();
-      final uid = user.uid;
-        Navigator.of(context).pop();
-        Navigator.push(context, new MaterialPageRoute(
-        builder: (BuildContext context) => new Profile(uid:uid))
-        );
-    }
+  void chooseId(context) async {
+    final FirebaseUser user = await _auth.getUser();
+    final uid = user.uid;
+    Navigator.of(context).pop();
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (BuildContext context) => new Choose(uid: uid)));
+  }
 
-    void chooseId(context) async{
+  void newDogActionBar(context) async {
+    Navigator.push(context,
+        new MaterialPageRoute(builder: (BuildContext context) => new NewDog()));
+  }
 
-      final FirebaseUser user = await _auth.getUser();
-      final uid = user.uid;
-        Navigator.of(context).pop();
-        Navigator.push(context, new MaterialPageRoute(
-        builder: (BuildContext context) => new Choose(uid:uid))
-        );
-    }
+  void gotoPlay(context) async {
+    final FirebaseUser user = await _auth.getUser();
+    final uid = user.uid;
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (BuildContext context) => new Choose(uid: uid)));
+  }
 
-      void chooseLogId(context) async{
-
-        final FirebaseUser user = await _auth.getUser();
-        final uid = user.uid;
-          Navigator.of(context).pop();
-          Navigator.push(context, new MaterialPageRoute(
-          builder: (BuildContext context) => new ChooseLog(uid:uid))
-        );
-    }
-
-
+  void chooseLogId(context) async {
+    final FirebaseUser user = await _auth.getUser();
+    final uid = user.uid;
+    Navigator.of(context).pop();
+    Navigator.push(
+        context,
+        new MaterialPageRoute(
+            builder: (BuildContext context) => new ChooseLog(uid: uid)));
+  }
 }
-

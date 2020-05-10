@@ -28,9 +28,8 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     return loading ? Loading(): Scaffold(
-      backgroundColor: Colors.grey,
+      backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        backgroundColor: Colors.blueGrey,
         elevation: 0.0,
         title: Text("Sign in to DogWalker"),
         actions: <Widget>[

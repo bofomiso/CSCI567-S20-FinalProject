@@ -16,7 +16,7 @@ class NewDog extends StatefulWidget {
 }
 
 class _NewDogState extends State<NewDog> {
-  File _path = null;
+  File _path;
   final AuthServices _auth  = AuthServices();
   final db = Firestore.instance;
   final _formKey = GlobalKey<FormState>();
@@ -107,7 +107,7 @@ class _NewDogState extends State<NewDog> {
                   onPressed: (){
                     typeOfPic(context);
                   }, 
-                  child: Text('profile'),
+                  child: Text('Picture'),
                   color: Colors.blue,
                   textColor: Colors.white,
                   disabledColor: Colors.grey,
