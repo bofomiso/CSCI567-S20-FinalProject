@@ -97,11 +97,60 @@ class _HomeState extends State<Home> {
           ],
         ),
       ),
-      body: Center(
-        child: Image.asset('assets/dog.png'),
+      body: Container(
+        padding: EdgeInsets.only(top:10.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                // Text(
+                //   'Doggo',
+                //    style: TextStyle(
+                //      fontSize: 49,
+                //    ), 
+                // ),
+                Image.asset('assets/dog.png',
+                height: 150,
+                width: 150,
+                ),
+                Text('Already have a dog? Time his play session!'),
+                Text('Add your dog if you havent!'),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    ButtonBar(
+                      children: <Widget>[
+                       FloatingActionButton(
+                        onPressed: null,
+                        child: Text('Play'),
+                        heroTag: 'button5',
+                      ),
+                        FloatingActionButton(
+                          onPressed: null,
+                          child: Text('Add'),
+                          heroTag: 'button6',
+                          backgroundColor: Colors.green,
+                        ),
+                      ],
+                    ),
+
+
+                  ],
+                )
+              ],
+            ),
+          ],
+        ),
       ), 
     );
   }
+
+  //child: Image.asset('assets/dog.png'),
 
     void userIdFunction(context) async{
 

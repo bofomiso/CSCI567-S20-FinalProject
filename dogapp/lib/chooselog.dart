@@ -24,27 +24,39 @@ InkWell buildItem(context, DocumentSnapshot doc) {
       elevation: 10,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
-        child: 
-        Container(
+        child: Container(
           width: double.infinity,
-                  child: Column(          
+            child: Row(          
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                doc.data['name'],
-                style: TextStyle(fontSize: 28),
+              Column(
+                children: <Widget>[
+                  Text(
+                  doc.data['name'],
+                  style: TextStyle(fontSize: 28),
+                  ),
+                  Text(
+                    'Breed: ${doc.data['breed']}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    'Size: ${doc.data['size']}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                  Text(
+                    'Age: ${doc.data['age']}',
+                    style: TextStyle(fontSize: 20),
+                  ),
+                ],
               ),
-              Text(
-                'Breed: ${doc.data['breed']}',
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                'Size: ${doc.data['size']}',
-                style: TextStyle(fontSize: 20),
-              ),
-              Text(
-                'Age: ${doc.data['age']}',
-                style: TextStyle(fontSize: 20),
+              Column(
+                children: <Widget>[
+                  Image.network(
+                    doc.data['pictureURL'],
+                    height: 100,
+                    width: 100,
+                  ),
+                ],
               ),
               SizedBox(
                 height: 12,
