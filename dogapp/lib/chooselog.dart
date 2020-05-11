@@ -20,7 +20,7 @@ InkWell buildItem(context, DocumentSnapshot doc) {
       child: 
       Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      color: Colors.greenAccent,
+      color: Colors.blue,
       elevation: 10,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
@@ -75,10 +75,11 @@ class _ChooseLogState extends State<ChooseLog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Choose your Dog'),
       ),
-      body: StreamBuilder(                    
+      body: StreamBuilder(                         
           stream: Firestore.instance.collection('dog').where('userId', isEqualTo: widget.uid).snapshots(),
           builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (!snapshot.hasData) return Loading();

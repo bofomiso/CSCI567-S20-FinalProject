@@ -19,7 +19,7 @@ InkWell buildItem(context, DocumentSnapshot doc) {
       child: 
       Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-      color: Colors.greenAccent,
+      color: Colors.blue,
       elevation: 10,
       child: Padding(
         padding: const EdgeInsets.all(20.0),
